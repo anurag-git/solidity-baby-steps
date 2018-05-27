@@ -1,3 +1,5 @@
+pragma solidity ^0.4.0;
+
 contract ArrayRR {
 
     address creator;
@@ -5,42 +7,35 @@ contract ArrayRR {
     uint8[10] integers; // NOTE 1 see below
     int8 setarraysuccessful = -1; // 1 success, 0 fail, -1 not yet tried
 
-    function ArrayRR() 
-    {
+    constructor() public {
         creator = msg.sender;
         uint8 x = 0;
-        while(x < integers.length)
-        {
+        while(x < integers.length) {
         	integers[x] = 1; // initialize array to all zeros
         	x++;
         }
     }
     
-    function setArray(uint8[10] incoming)  // NOTE 2 see below. Also, use enough gas.
-    {
+    function setArray(uint8[10] incoming) public {  // NOTE 2 see below. Also, use enough gas.
     	setarraysuccessful = 0;
     	uint8 x = 0;
-        while(x < arraylength)
-        {
+        while(x < arraylength) {
         	integers[x] = incoming[x]; // initialize array to all zeros
         	x++;
         }
+        
         setarraysuccessful = 1;
-    	return;
     }
     
-    function getArraySettingResult() constant returns (int8)
-    {
+    function getArraySettingResult() public view returns (int8) {
     	return setarraysuccessful;
     }
     
-    function getArray() constant returns (uint8[10])  // NOTE 3 see below
-    {
+    function getArray() public view returns (uint8[10]) { // NOTE 3 see below
     	return integers;
     }
     
-    function getValue(uint8 x) constant returns (uint8)
-    {
+    function getValue(uint8 x) public view returns (uint8) {
     	return integers[x];
     }
     
@@ -48,14 +43,14 @@ contract ArrayRR {
      Standard kill() function to recover funds 
      **********/
     
-    function kill()
-    { 
-        if (msg.sender == creator)
-        {
-            suicide(creator);  // kills this contract and sends remaining funds back to creator
+    function kill() public { 
+        if (msg.sender == creator) {
+            selfdestruct(creator);  // kills this contract and sends remaining funds back to creator
         }
     }
 }
+
+/* Don't understand this part, still keeping it */
 
 // NOTES 1, 2, 3
 // because "integers" is declared as uint8[10], getArray() must return type uint8[10].
