@@ -1,5 +1,4 @@
 // Given an address hash, detect whether it's a contract-type address or a normal one
-
 /***
  *   This contract IS WORKING now with latest solidity compiler 0.4.24. - Anurag 27-May-2018                                              
  */
