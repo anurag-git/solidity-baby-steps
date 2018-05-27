@@ -1,38 +1,28 @@
 // Given an address hash, detect whether it's a contract-type address or a normal one
 
 /***
- *     _    _  ___  ______ _   _ _____ _   _ _____ 
- *    | |  | |/ _ \ | ___ \ \ | |_   _| \ | |  __ \
- *    | |  | / /_\ \| |_/ /  \| | | | |  \| | |  \/
- *    | |/\| |  _  ||    /| . ` | | | | . ` | | __ 
- *    \  /\  / | | || |\ \| |\  |_| |_| |\  | |_\ \
- *     \/  \/\_| |_/\_| \_\_| \_/\___/\_| \_/\____/
- *                                                 
- *   This contract DOES NOT WORK. It is not currently possible to 
- *   determine whether an address hash is a contract or normal address
- *   from Solidity. - fivedogit 9/14/2015                                              
+ *   This contract IS WORKING now with latest solidity compiler 0.4.24. - Anurag 27-May-2018                                              
  */
+
+pragma solidity ^0.4.0;
 
 contract ContractDetector {
 
     address creator;
-    string contract_or_normal = "not checked";
+    string public contract_or_normal = "not checked";
     
-    function ContractDetector() 
-    {
+    constructor () public {
         creator = msg.sender;
     }
     
-    function testContractOrNormal(address inc_addr)
-    {
+    function testContractOrNormal(address inc_addr) public {
     	if(inc_addr.call())
     		contract_or_normal = "normal";
     	else
     		contract_or_normal = "contract";
     }
     
-    function getContractOrNormal(address inc_addr) constant returns (string)
-    {
+    function getContractOrNormal() public view returns (string) {
     	return contract_or_normal;
     }
     
@@ -40,11 +30,10 @@ contract ContractDetector {
      Standard kill() function to recover funds 
      **********/
     
-    function kill()
-    { 
+    function kill() public { 
         if (msg.sender == creator)
         {
-            suicide(creator);  // kills this contract and sends remaining funds back to creator
+            selfdestruct(creator);  // kills this contract and sends remaining funds back to creator
         }
     }
 }
