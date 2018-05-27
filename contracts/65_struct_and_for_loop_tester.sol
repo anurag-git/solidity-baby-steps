@@ -2,6 +2,7 @@
 // Each tile has an elevation value (as well as an owner and descriptorContract which aren't used here)
 // 
 // In the constructor, the elevations are set to standard values via for loops.
+pragma solidity ^0.4.0;
 
 contract StructAndFor {
 
@@ -9,26 +10,28 @@ contract StructAndFor {
     uint8 mapsize = 9;
     Tile[9][9] tiles; 
     
-    struct Tile 
-    {
+    struct Tile {
         address owner;
         address descriptorContract;
         uint8 elevation;
     }
     
-    function StructAndFor() 
-    {
+    constructor() public {
         creator = msg.sender;
-        for(uint8 y = 0; y < mapsize; y++)
-    	{
-        	for(uint8 x = 0; x < mapsize; x++)
-        	{
+        for(uint8 y = 0; y < mapsize; y++) {
+        	for(uint8 x = 0; x < mapsize; x++) {
         		tiles[x][y].elevation = mapsize*y + x; // row 0: 0, 1, 2, 3, 4...   row 1: 9, 10, 11, 12
         	}	
         }	
     }
     
-    function getElevation(uint8 x, uint8 y) constant returns (uint8)
+    function getElevation(
+        uint8 x, 
+        uint8 y
+        ) 
+        public 
+        view 
+        returns (uint8)
     {
     	return tiles[x][y].elevation;
     }
@@ -37,11 +40,9 @@ contract StructAndFor {
      Standard kill() function to recover funds 
      **********/
     
-    function kill()
-    { 
-        if (msg.sender == creator)
-        {
-            suicide(creator);  // kills this contract and sends remaining funds back to creator
+    function kill() public { 
+        if (msg.sender == creator) {
+            selfdestruct(creator);  // kills this contract and sends remaining funds back to creator
         }
     }
 }
